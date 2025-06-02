@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#667eea" />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="AI-powered blood cell analyzer for medical professionals. Automated detection and classification of RBC, WBC, and platelets with 93% accuracy." />
+  <meta name="keywords" content="blood cell analyzer, medical AI, hematology, cell detection, YOLOv5, medical imaging" />
+  <meta name="author" content="Blood Cell Analyzer Team" />
+  
+  <!-- Open Graph Meta Tags for Social Sharing -->
+  <meta property="og:title" content="Blood Cell Analyzer - AI-Powered Medical Imaging" />
+  <meta property="og:description" content="Revolutionary AI platform for automated blood cell analysis. Fast, accurate, and reliable cell detection for medical professionals." />
+  <meta property="og:image" content="%PUBLIC_URL%/social-preview.png" />
+  <meta property="og:url" content="https://blood-cell-analyzer.com" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Blood Cell Analyzer" />
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Blood Cell Analyzer - AI-Powered Medical Imaging" />
+  <meta name="twitter:description" content="Revolutionary AI platform for automated blood cell analysis with 93% accuracy." />
+  <meta name="twitter:image" content="%PUBLIC_URL%/social-preview.png" />
+  
+  <!-- Apple Touch Icon and Favicons -->
+  <link rel="apple-touch-icon" sizes="180x180" href="%PUBLIC_URL%/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="%PUBLIC_URL%/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="%PUBLIC_URL%/favicon-16x16.png" />
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  <link rel="mask-icon" href="%PUBLIC_URL%/safari-pinned-tab.svg" color="#667eea" />
+  <meta name="msapplication-TileColor" content="#667eea" />
+  <meta name="msapplication-config" content="%PUBLIC_URL%/browserconfig.xml" />
+  
+  <!-- Preconnect to External Resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <!-- Critical CSS for Above-the-Fold Content -->
+  <style>
+    /* Critical CSS - Inline for performance */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    html {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      scroll-behavior: smooth;
+    }
+    
+    body {
+      margin: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      color: #333;
+      overflow-x: hidden;
+    }
+    
+    /* Loading Screen Styles */
+    .app-loading {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      transition: opacity 0.5s ease-out;
+    }
+    
+    .app-loading.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+    
+    .loading-logo {
+      width: 80px;
+      height: 80px;
+      margin-bottom: 2rem;
+      animation: pulse 2s ease-in-out infinite;
+    }
+    
+    .loading-text {
+      color: white;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    
+    .loading-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.1); opacity: 0.8; }
+    }
+    
+    /* Error Boundary Styles */
+    .error-boundary {
+      padding: 2rem;
+      text-align: center;
+      background: white;
+      margin: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .error-icon {
+      font-size: 4rem;
+      color: #ff4757;
+      margin-bottom: 1rem;
+    }
+    
+    .error-title {
+      font-size: 1.5rem;
+      color: #333;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+    
+    .error-message {
+      color: #666;
+      margin-bottom: 2rem;
+      line-height: 1.6;
+    }
+    
+    .error-actions {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .error-button {
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .error-button:hover {
+      background: #5a6fd8;
+      transform: translateY(-2px);
+    }
+    
+    /* Accessibility Improvements */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+    
+    /* Reduce motion for users who prefer it */
+    @media (prefers-reduced-motion: reduce) {
+      .loading-logo,
+      .loading-spinner {
+        animation: none;
+      }
+      
+      html {
+        scroll-behavior: auto;
+      }
+    }
+    
+    /* High contrast mode support */
+    @media (prefers-contrast: high) {
+      body {
+        background: #000;
+        color: #fff;
+      }
+    }
+  </style>
+  
+  <!-- Title -->
+  <title>Blood Cell Analyzer - AI-Powered Medical Imaging Platform</title>
+  
+  <!-- Structured Data for Search Engines -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Blood Cell Analyzer",
+    "description": "AI-powered blood cell analysis platform for medical professionals",
+    "url": "https://blood-cell-analyzer.com",
+    "applicationCategory": "Medical Software",
+    "operatingSystem": "Web Browser",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "creator": {
+      "@type": "Organization",
+      "name": "Blood Cell Analyzer Team"
+    },
+    "featureList": [
+      "YOLOv5-based cell detection",
+      "93% accuracy rate",
+      "Sub-2 second processing",
+      "RBC, WBC, and Platelet classification",
+      "Batch processing support",
+      "Real-time analysis"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <!-- Skip to main content for accessibility -->
+  <a href="#root" class="sr-only">Skip to main content</a>
+  
+  <!-- Loading Screen -->
+  <div id="app-loading" class="app-loading">
+    <div class="loading-logo">
+      <!-- Blood cell icon using emoji for simplicity -->
+      🩸
+    </div>
+    <div class="loading-text">Blood Cell Analyzer</div>
+    <div class="loading-subtitle">AI-Powered Medical Imaging Platform</div>
+    <div class="loading-spinner"></div>
+    <p class="sr-only">Loading application...</p>
+  </div>
+  
+  <!-- NoScript Fallback -->
+  <noscript>
+    <div class="error-boundary">
+      <div class="error-icon">⚠️</div>
+      <h1 class="error-title">JavaScript Required</h1>
+      <p class="error-message">
+        This application requires JavaScript to function properly. 
+        Please enable JavaScript in your browser settings and refresh the page.
+      </p>
+      <div class="error-actions">
+        <a href="https://www.enable-javascript.com/" class="error-button" target="_blank" rel="noopener noreferrer">
+          How to Enable JavaScript
+        </a>
+        <button class="error-button" onclick="window.location.reload()">
+          Refresh Page
+        </button>
+      </div>
+    </div>
+  </noscript>
+  
+  <!-- Main React App Container -->
+  <div id="root" role="main"></div>
+  
+  <!-- Error Boundary Fallback (will be shown by React if app crashes) -->
+  <div id="error-fallback" style="display: none;">
+    <div class="error-boundary">
+      <div class="error-icon">💥</div>
+      <h1 class="error-title">Something went wrong</h1>
+      <p class="error-message">
+        We're sorry, but something unexpected happened. Please try refreshing the page or contact support if the problem persists.
+      </p>
+      <div class="error-actions">
+        <button class="error-button" onclick="window.location.reload()">
+          Refresh Page
+        </button>
+        <a href="mailto:support@blood-cell-analyzer.com" class="error-button">
+          Contact Support
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Inline JavaScript for Loading Management -->
+  <script>
+    // Performance monitoring
+    window.performance.mark('page-start');
+    
+    // Hide loading screen when React app loads
+    window.addEventListener('load', function() {
+      setTimeout(function() {
+        const loadingScreen = document.getElementById('app-loading');
+        if (loadingScreen) {
+          loadingScreen.classList.add('hidden');
+          setTimeout(function() {
+            loadingScreen.style.display = 'none';
+          }, 500);
+        }
+        window.performance.mark('page-loaded');
+      }, 1000); // Minimum loading time for branding
+    });
+    
+    // Error handling for unhandled JavaScript errors
+    window.addEventListener('error', function(event) {
+      console.error('Global error:', event.error);
+      
+      // Log to analytics if available
+      if (window.gtag) {
+        window.gtag('event', 'exception', {
+          description: event.error?.message || 'Unknown error',
+          fatal: false
+        });
+      }
+    });
+    
+    // Handle unhandled promise rejections
+    window.addEventListener('unhandledrejection', function(event) {
+      console.error('Unhandled promise rejection:', event.reason);
+      
+      // Log to analytics if available
+      if (window.gtag) {
+        window.gtag('event', 'exception', {
+          description: 'Unhandled promise rejection: ' + (event.reason?.message || 'Unknown'),
+          fatal: false
+        });
+      }
+    });
+    
+    // Service Worker Registration (for PWA capabilities)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function() {
+        navigator.serviceWorker.register('%PUBLIC_URL%/sw.js')
+          .then(function(registration) {
+            console.log('SW registered: ', registration);
+          })
+          .catch(function(registrationError) {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+    
+    // Theme detection and application
+    function applyTheme() {
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const prefersHighContrast = window.matchMedia('(prefers-contrast: high)').matches;
+      
+      if (prefersDark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+      
+      if (prefersHighContrast) {
+        document.documentElement.setAttribute('data-contrast', 'high');
+      }
+    }
+    
+    // Apply theme immediately
+    applyTheme();
+    
+    // Listen for theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', applyTheme);
+    window.matchMedia('(prefers-contrast: high)').addEventListener('change', applyTheme);
+    
+    // Basic analytics (replace with your analytics solution)
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    
+    // Privacy-friendly analytics setup
+    if (localStorage.getItem('analytics-consent') === 'true') {
+      // Initialize analytics only if user consented
+      // gtag('js', new Date());
+      // gtag('config', 'GA_MEASUREMENT_ID');
+    }
+    
+    // App version and build info (will be replaced by build process)
+    window.APP_VERSION = '%REACT_APP_VERSION%' || '1.0.0';
+    window.BUILD_TIME = '%REACT_APP_BUILD_TIME%' || new Date().toISOString();
+    
+    console.log('🩸 Blood Cell Analyzer v' + window.APP_VERSION);
+    console.log('🚀 Built at: ' + window.BUILD_TIME);
+    
+    // Feature detection
+    window.FEATURES = {
+      webgl: !!window.WebGLRenderingContext,
+      webgl2: !!window.WebGL2RenderingContext,
+      canvas: !!window.HTMLCanvasElement,
+      fileAPI: !!(window.File && window.FileReader && window.FileList && window.Blob),
+      dragDrop: 'draggable' in document.createElement('div'),
+      offline: 'onLine' in navigator,
+      notifications: 'Notification' in window,
+      geolocation: 'geolocation' in navigator,
+      localStorage: !!window.localStorage,
+      sessionStorage: !!window.sessionStorage,
+      webWorkers: !!window.Worker,
+      serviceWorker: 'serviceWorker' in navigator,
+      webAssembly: 'WebAssembly' in window
+    };
+    
+    console.log('🔧 Browser features:', window.FEATURES);
+  </script>
+  
+  <!-- Google Analytics (example - replace with your tracking ID) -->
+  <!-- Uncomment and configure for production -->
+  <!--
+  <script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'GA_MEASUREMENT_ID', {
+      anonymize_ip: true,
+      cookie_flags: 'SameSite=None;Secure'
+    });
+  </script>
+  -->
+  
+  <!-- Hotjar or similar user experience analytics -->
+  <!-- Uncomment and configure for production -->
+  <!--
+  <script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:YOUR_HOTJAR_ID,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+  </script>
+  -->
+</body>
+</html>
