@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import './components/ImageUpload.css';
+
 
 // Simple inline styles
 const styles = {

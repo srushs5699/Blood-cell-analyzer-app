@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import axios from 'axios';
-import '../styles/ImageUpload.css';
+import './ImageUpload.css';
 
 const ImageUpload = ({ onAnalysisComplete, loading, setLoading }) => {
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -131,6 +131,7 @@ const ImageUpload = ({ onAnalysisComplete, loading, setLoading }) => {
             onClick={analyzeImages}
             disabled={loading || selectedFiles.length === 0}
             className="analyze-btn"
+            
           >
             {loading ? (
               <>
@@ -184,6 +185,7 @@ const ImageUpload = ({ onAnalysisComplete, loading, setLoading }) => {
       </div>
     </div>
   );
+  
 };
 
 export default ImageUpload;
