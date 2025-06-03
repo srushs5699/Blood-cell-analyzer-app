@@ -166,24 +166,6 @@ python train.py --data data.yaml --epochs 100 --weights yolov5s.pt
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- YOLOv5 by Ultralytics
-- Blood cell dataset contributors
-- Medical imaging research community
-
-## 📞 Contact
-
-For questions and support, please open an issue in this repository.
-
----
-
-**Note**: This is a medical imaging tool for research and educational purposes. Always consult with medical professionals for clinical decisions.
-"""
-
-# ============================================================================
-# ADDITIONAL COMPONENTS TO IMPLEMENT
-# ============================================================================
 
 print("Complete Blood Cell Analyzer Project Structure Created!")
 print("\nNext Steps:")
